@@ -13,6 +13,8 @@ public class Person {
     public Parrot getParrot() {
         return parrot;
     }
+
+    // Set을 사용한 의존성 주입
     public void setParrot(Parrot parrot) {
         this.parrot = parrot;
     }
