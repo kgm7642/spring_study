@@ -1,7 +1,10 @@
 package org.scoula.config;
 
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
@@ -9,12 +12,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
-/*
-* 웹 요청 처리, 정적 자원 매핑, 뷰 리졸버 설정 등등 ..
-* */
-@EnableWebMvc // -> Spring Web MVC를 사용하겠다는 선언 ( = 디스패쳐서블릿을 동작하겠다)
-@ComponentScan(basePackages = {"org.scoula"})
-// Spring MVC용 컴포넌트 등록을 위한 스캔 패키지
+@EnableWebMvc
+@ComponentScan(basePackages = {
+        "org.scoula.controller",
+        "org.scoula.ex03.controller"
+        }) // Spring MVC용 컴포넌트 등록을 위한 스캔 패키지
 public class ServletConfig implements WebMvcConfigurer {
 
     //프론트파일(css, js, img)의 위치를 지정해주는 함수
@@ -22,7 +24,6 @@ public class ServletConfig implements WebMvcConfigurer {
     // /resources/밑에서 찾겠다라는 설정
     // <img src="/resources/img/a.png">
 
-    // 정적자원 설정
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
@@ -42,4 +43,12 @@ public class ServletConfig implements WebMvcConfigurer {
         registry.viewResolver(bean);
     }
 
+    // Servlet 3.0 파일 업로드 사용시 - MultipartResolver 빈 등록
+    @Bean
+    public MultipartResolver multipartResolver() {
+        StandardServletMultipartResolver resolver
+                = new StandardServletMultipartResolver();
+        return resolver;
+
+    }
 }
